@@ -241,17 +241,17 @@ async function consturctServer(moduleDefs) {
         const cookies = moduleResponse.cookie
         if (!query.noCookie) {
           if (Array.isArray(cookies) && cookies.length > 0) {
-            // if (req.protocol === 'https') {
-            // Try to fix CORS SameSite Problem
-            res.append(
-              'Set-Cookie',
-              cookies.map((cookie) => {
-                return cookie + '; SameSite=None; Secure'
-              }),
-            )
-            // } else {
-            //   res.append('Set-Cookie', cookies)
-            // }
+            if (req.protocol === 'https') {
+              // Try to fix CORS SameSite Problem
+              res.append(
+                'Set-Cookie',
+                cookies.map((cookie) => {
+                  return cookie + '; SameSite=None; Secure'
+                }),
+              )
+            } else {
+              res.append('Set-Cookie', cookies)
+            }
           }
         }
         res.status(moduleResponse.status).send(moduleResponse.body)
