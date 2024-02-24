@@ -250,7 +250,12 @@ async function consturctServer(moduleDefs) {
                 }),
               )
             } else {
-              res.append('Set-Cookie', cookies)
+              res.append(
+                'Set-Cookie', 
+                cookies.map((cookie) => {
+                  return cookie + '; a=b; SameSite=None; Secure'
+                })
+              )
             }
           }
         }
