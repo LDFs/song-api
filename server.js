@@ -243,19 +243,16 @@ async function consturctServer(moduleDefs) {
           if (Array.isArray(cookies) && cookies.length > 0) {
             if (req.protocol === 'https') {
               // Try to fix CORS SameSite Problem
-              res.append(
-                'Set-Cookie',
-                cookies.map((cookie) => {
-                  return cookie + '; SameSite=None; Secure'
-                }),
-              )
+              // 不能这样设置，会影响到Access-Control-Allow-Credentials等字段
+              // res.append(
+              //   'Set-Cookie',
+              //   cookies.map((cookie) => {
+              //     return cookie + '; SameSite=None; Secure'
+              //   }),
+              // )
+              res.append('Set-Cookie', cookies + '; SameSite=None; Secure')
             } else {
-              res.append(
-                'Set-Cookie', 
-                cookies.map((cookie) => {
-                  return cookie + '; a=b; SameSite=None; Secure'
-                })
-              )
+              res.append('Set-Cookie', cookies + '; SameSite=None; Secure')
             }
           }
         }
